@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -9,30 +9,38 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useTaskContext } from '../../contexts/TaskContext';
 
-export default function CreateTask() {
+export default function EditTask() {
   const router = useRouter();
-  const { addTask } = useTaskContext();
+  const { id } = useLocalSearchParams();
+  const { tasks, updateTask } = useTaskContext();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleCreate = () => {
+  // Load existing task data
+  useEffect(() => {
+    const task = tasks.find(t => t.id === id);
+    if (task) {
+      setTitle(task.title);
+      setDescription(task.description);
+    }
+  }, [id, tasks]);
+
+  const handleUpdate = () => {
     if (!title || !description || isSubmitting) return;
 
     setIsSubmitting(true);
     try {
-      addTask({
+      updateTask(id as string, {
         title,
         description,
-        status: 'pending',
       });
       router.back();
     } catch (error) {
-      console.error('Failed to create task:', error);
-      // You might want to add error handling UI here
+      console.error('Failed to update task:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -71,11 +79,11 @@ export default function CreateTask() {
             styles.button,
             (!title || !description || isSubmitting) && styles.buttonDisabled
           ]}
-          onPress={handleCreate}
+          onPress={handleUpdate}
           disabled={!title || !description || isSubmitting}
         >
           <Text style={styles.buttonText}>
-            {isSubmitting ? 'Creating...' : 'Create Task'}
+            {isSubmitting ? 'Updating...' : 'Update Task'}
           </Text>
         </TouchableOpacity>
       </ScrollView>
