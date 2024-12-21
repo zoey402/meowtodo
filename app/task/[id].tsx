@@ -1,10 +1,9 @@
-// app/task/[id].tsx
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTaskContext } from '../../contexts/TaskContext';
 
 export default function TaskDetails() {
-  const { id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const { tasks, deleteTask } = useTaskContext(); 
   
