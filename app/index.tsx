@@ -3,27 +3,20 @@ import { useRouter } from 'expo-router';
 import { StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MOCK_TASKS } from '../types/task';
 import { TaskCard } from '../components/TaskCard';
-import { useState } from 'react';
+import { useTaskContext } from '../contexts/TaskContext';
 
 export default function Home() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const [tasks, setTasks] = useState(MOCK_TASKS);
+  const { tasks, updateTask } = useTaskContext();
 
   const handleToggleStatus = (taskId: string) => {
-    setTasks(currentTasks =>
-      currentTasks.map(task =>
-        task.id === taskId
-          ? {
-              ...task,
-              status: task.status === 'completed' ? 'pending' : 'completed',
-              updatedAt: new Date()
-            }
-          : task
-      )
-    );
+    updateTask(taskId, {
+      status: tasks.find(t => t.id === taskId)?.status === 'completed' 
+        ? 'pending' 
+        : 'completed'
+    });
   };
 
   return (

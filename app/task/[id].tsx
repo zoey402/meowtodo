@@ -1,13 +1,19 @@
 // app/task/[id].tsx
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { MOCK_TASKS } from '../../types/task';
+import { useTaskContext } from '../../contexts/TaskContext';
 
 export default function TaskDetails() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { tasks, deleteTask } = useTaskContext(); 
   
-  const task = MOCK_TASKS.find(t => t.id === id);
+  const task = tasks.find(t => t.id === id);
+
+  const handleDelete = () => {
+    deleteTask(id as string);
+    router.back();
+  };
 
   if (!task) {
     return (
@@ -45,14 +51,14 @@ export default function TaskDetails() {
       <View style={styles.actions}>
         <TouchableOpacity
           style={[styles.button, styles.editButton]}
-          onPress={() => {/* TODO: Implement edit */}}
+          onPress={() => router.push(`/task/edit?id=${id}`)}
         >
           <Text style={styles.buttonText}>Edit Task</Text>
         </TouchableOpacity>
         
         <TouchableOpacity
           style={[styles.button, styles.deleteButton]}
-          onPress={() => {/* TODO: Implement delete */}}
+          onPress={handleDelete} 
         >
           <Text style={[styles.buttonText, styles.deleteButtonText]}>
             Delete Task
