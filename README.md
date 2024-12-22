@@ -10,13 +10,13 @@ Meow To Do is a modern, user-friendly task management application built with Rea
 
 Current Features:
 - Task list view with intuitive status toggling
+- Task creation, editing, and deletion
 - Task details viewing
+- Task search functionality
 - Clean, modern user interface
 - Cross-platform support (iOS & Android)
 
 Coming Soon:
-- Task creation, editing, and deletion
-- Task search functionality
 - Cat-themed rewards system
 - And more exciting features!
 
