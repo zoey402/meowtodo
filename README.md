@@ -40,7 +40,7 @@ Coming Soon:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/meow-todo.git
+git clone https://github.com/zoey402/meow-todo.git
 cd meow-todo
 ```
 
